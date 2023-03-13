@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -56,8 +58,7 @@ public class Main {
 //			 System.out.println("databas craeted");
 // 		     st.execute(sql1);
  		     
-			 String apiUrl = "\r\n"
-			 		+ "http://universities.hipolabs.com/search?country=<countryNameGoesHere> ";
+			 String apiUrl = "http://universities.hipolabs.com/search?country=Oman";
 		        try {
 		            URL url1 = new URL(apiUrl);
 		            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
@@ -79,9 +80,11 @@ public class Main {
 		            conn.disconnect();
 		            
 		            Gson gson = new Gson();
-		            MyObject myObj = gson.fromJson(json.toString(), MyObject.class);
+		            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
 		            
 		            // Use myObj for further processing
+		           
+		            System.out.println("done");
 		            
 		        } catch (Exception e) {
 		            e.printStackTrace();
