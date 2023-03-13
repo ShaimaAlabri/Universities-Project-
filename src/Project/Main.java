@@ -60,9 +60,9 @@ public class Main {
 				 + "alpha_two_code text "
 				 + ");";
 		 System.out.println("databas craeted");
-		     st.execute(sql1);
+//		     st.execute(sql1);
  		     
-			 String apiUrl = "http://universities.hipolabs.com/search?country=United+States";
+			 String apiUrl = "http://universities.hipolabs.com/search?country=Canada ";
 		        try {
 		            URL url1 = new URL(apiUrl);
 		            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
