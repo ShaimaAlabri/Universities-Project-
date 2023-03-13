@@ -51,7 +51,7 @@ public class Main {
 	   	 Statement st = con.createStatement();
 	
 		
-		 String sql1= "Create table Universities ("
+		 String sql1= "Create table Univers_United_States ("
 //				 + " state_province text ,"
 				 + " domains text ,"
 				 + " country text  ,"
@@ -59,10 +59,10 @@ public class Main {
 				 + " name text , "
 				 + "alpha_two_code text "
 				 + ");";
-//			 System.out.println("databas craeted");
+		 System.out.println("databas craeted");
 //		     st.execute(sql1);
  		     
-			 String apiUrl = "http://universities.hipolabs.com/search?country=Oman";
+			 String apiUrl = "http://universities.hipolabs.com/search?country=United+States";
 		        try {
 		            URL url1 = new URL(apiUrl);
 		            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
@@ -88,7 +88,7 @@ public class Main {
 		            java.lang.reflect.Type listType = new TypeToken<ArrayList<MyObject>>() {}.getType();
 		            List<MyObject> myObj = gson.fromJson(json.toString(), listType);
 		            // Use myObj for further processing
-		            String insertSql = "INSERT INTO Universities (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
+		            String insertSql = "INSERT INTO Univers_United_States (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
 		            PreparedStatement ps = con.prepareStatement(insertSql);
 
 		            for (MyObject obj : myObj) {
