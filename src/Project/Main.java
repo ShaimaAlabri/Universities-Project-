@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Main {
 	
 		
 		 String sql1= "Create table Universities ("
-				 + " state_province text ,"
+//				 + " state_province text ,"
 				 + " domains text ,"
 				 + " country text  ,"
 				 + " web_pages text ,"
@@ -56,7 +57,7 @@ public class Main {
 				 + "alpha_two_code text "
 				 + ");";
 //			 System.out.println("databas craeted");
-// 		     st.execute(sql1);
+//		     st.execute(sql1);
  		     
 			 String apiUrl = "http://universities.hipolabs.com/search?country=Oman";
 		        try {
@@ -83,8 +84,26 @@ public class Main {
 		            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
 		            
 		            // Use myObj for further processing
-		           
-		            System.out.println("done");
+		            String insertSql = "INSERT INTO Universities (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
+		            PreparedStatement ps = con.prepareStatement(insertSql);
+
+		            for (MyObject obj : myObj) {
+		                List<String> domains = obj.getDomains();
+		                String country = obj.getCountry();
+		                List<String> webPages = obj.getWeb_pages();
+		                String webPagesString = String.join(",", webPages);
+		                String name = obj.getName();
+		                String alpha_two_code = obj.getAlpha_two_code();
+
+		                ps.setString(1, String.join(",", domains));
+		                ps.setString(2, country);
+		                ps.setString(3, webPagesString);
+		                ps.setString(4, name);
+		                ps.setString(5, alpha_two_code);
+
+		                ps.executeUpdate();
+		            }
+//		            System.out.println("done");
 		            
 		        } catch (Exception e) {
 		            e.printStackTrace();
