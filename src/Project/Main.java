@@ -1,5 +1,6 @@
 package Project;
 
+import java.awt.Window.Type;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -81,8 +84,9 @@ public class Main {
 		            conn.disconnect();
 		            
 		            Gson gson = new Gson();
-		            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
-		            
+//		            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
+		            java.lang.reflect.Type listType = new TypeToken<ArrayList<MyObject>>() {}.getType();
+		            List<MyObject> myObj = gson.fromJson(json.toString(), listType);
 		            // Use myObj for further processing
 		            String insertSql = "INSERT INTO Universities (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
 		            PreparedStatement ps = con.prepareStatement(insertSql);
