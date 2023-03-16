@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,13 @@ public class Main {
 		            // Use myObj for further processing
 		            String insertSql = "INSERT INTO Univers_Canada (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
 		            PreparedStatement ps = con.prepareStatement(insertSql);
-
+		            
+		        	 System.out.println("Which Country you want to show?");
+		        	 String i= null;
+		     	   	String sql = "SELECT * FROM "+i;
+		             ResultSet rs = st .executeQuery(sql);
+		             
+		             
 		            for (MyObject obj : myObj) {
 		                List<String> domains = obj.getDomains();
 		                String country = obj.getCountry();
@@ -105,7 +112,8 @@ public class Main {
 		                ps.setString(4, name);
 		                ps.setString(5, alpha_two_code);
 
-		                ps.executeUpdate();
+//		                ps.executeUpdate();
+		               
 		            }
 //		            System.out.println("done");
 		            
@@ -116,6 +124,7 @@ public class Main {
 	}catch (Exception e) {
 			System.err.println(e);
 	}
+	  
 }
 }
 
