@@ -44,6 +44,10 @@ public class Main {
 	   	 }
 	   	 Connection con = null;
 	   	 System.out.println("System is in prograss:");
+	   	 
+	   	String backupPath = "C:\\Users\\Lenovo\\eclipse-workspace\\UniversitiesProject\\backups.bak"; // specify the path for the backup file
+	   	String backupSql = "BACKUP DATABASE Universities TO DISK = '" + backupPath + "'";
+	   	
 	   	 try {
 	   	 // create a new table
 	   	 Driver driver = (Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
@@ -51,7 +55,10 @@ public class Main {
 	   	 con = DriverManager.getConnection(url, user, pass);
 	   	 Statement st = con.createStatement();
 		 
-         
+	   	 System.out.println("Enter the name of the country to search for universities:");
+		 String countryName = scanner.nextLine();
+
+		 String apiUrl = "http://universities.hipolabs.com/search?country=" + countryName;
 		
 		 String sql1= "Create table Uni_Canada ("
 //				 + " state_province text ,"
@@ -64,10 +71,7 @@ public class Main {
 //		 System.out.println("databas craeted");
 //		     st.execute(sql1);
 		 
-		 System.out.println("Enter the name of the country to search for universities:");
-		 String countryName = scanner.nextLine();
-
-		 String apiUrl = "http://universities.hipolabs.com/search?country=" + countryName;
+		
 // 		     
 //		 String apiUrl = "http://universities.hipolabs.com/search?country=Canada ";
 	        try {
@@ -111,11 +115,12 @@ public class Main {
 	                ps.setString(4, name);
 	                ps.setString(5, alpha_two_code);
 	                System.out.println(insertSql);
-	                ps.executeUpdate();
+//	                ps.executeUpdate();
 		               
 		            }
 		            System.out.println("done");
-		            
+		            st.execute(backupSql);
+		            System.out.println("Database backup created at " + backupPath);
 		        } catch (Exception e) {
 		            e.printStackTrace();
 		        }
