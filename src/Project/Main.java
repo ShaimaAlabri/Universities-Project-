@@ -50,9 +50,10 @@ public class Main {
 	   	 DriverManager.registerDriver(driver);
 	   	 con = DriverManager.getConnection(url, user, pass);
 	   	 Statement st = con.createStatement();
-	
+		 
+         
 		
-		 String sql1= "Create table Univers_Canada ("
+		 String sql1= "Create table Uni_Canada ("
 //				 + " state_province text ,"
 				 + " domains text ,"
 				 + " country text  ,"
@@ -60,62 +61,60 @@ public class Main {
 				 + " name text , "
 				 + "alpha_two_code text "
 				 + ");";
-		 System.out.println("databas craeted");
+//		 System.out.println("databas craeted");
 //		     st.execute(sql1);
- 		     
-			 String apiUrl = "http://universities.hipolabs.com/search?country=Canada ";
-		        try {
-		            URL url1 = new URL(apiUrl);
-		            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
-		            conn.setRequestMethod("GET");
-		            conn.setRequestProperty("Accept", "application/json");
-		            
-		            if (conn.getResponseCode() != 200) {
-		                throw new RuntimeException("HTTP error code : " + conn.getResponseCode());
-		            }
-		            
-		            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-		            String output;
-		            StringBuilder json = new StringBuilder();
-		            
-		            while ((output = br.readLine()) != null) {
-		                json.append(output);
-		            }
-		            
-		            conn.disconnect();
-		            
-		            Gson gson = new Gson();
-//		            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
-		            java.lang.reflect.Type listType = new TypeToken<ArrayList<MyObject>>() {}.getType();
-		            List<MyObject> myObj = gson.fromJson(json.toString(), listType);
-		            // Use myObj for further processing
-		            String insertSql = "INSERT INTO Univers_Canada (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
-		            PreparedStatement ps = con.prepareStatement(insertSql);
-		            
-		        	 System.out.println("Which Country you want to show?");
-		        	 String i= null;
-		     	   	String sql = "SELECT * FROM "+i;
-		             ResultSet rs = st .executeQuery(sql);
-		             
-		             
-		            for (MyObject obj : myObj) {
-		                List<String> domains = obj.getDomains();
-		                String country = obj.getCountry();
-		                List<String> webPages = obj.getWeb_pages();
-		                String webPagesString = String.join(",", webPages);
-		                String name = obj.getName();
-		                String alpha_two_code = obj.getAlpha_two_code();
+		 
+		 System.out.println("Enter the name of the country to search for universities:");
+		 String countryName = scanner.nextLine();
 
-		                ps.setString(1, String.join(",", domains));
-		                ps.setString(2, country);
-		                ps.setString(3, webPagesString);
-		                ps.setString(4, name);
-		                ps.setString(5, alpha_two_code);
-
-//		                ps.executeUpdate();
+		 String apiUrl = "http://universities.hipolabs.com/search?country=" + countryName;
+// 		     
+//		 String apiUrl = "http://universities.hipolabs.com/search?country=Canada ";
+	        try {
+	            URL url1 = new URL(apiUrl);
+	            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+	            conn.setRequestMethod("GET");
+	            conn.setRequestProperty("Accept", "application/json");
+	            
+	            if (conn.getResponseCode() != 200) {
+	                throw new RuntimeException("HTTP error code : " + conn.getResponseCode());
+	            }
+	            
+	            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+	            String output;
+	            StringBuilder json = new StringBuilder();
+	            
+	            while ((output = br.readLine()) != null) {
+	                json.append(output);
+	            }
+	            
+	            conn.disconnect();
+	            
+	            Gson gson = new Gson();
+//	            List<MyObject> myObj =  gson.fromJson(json.toString(), ArrayList.class);
+	            java.lang.reflect.Type listType = new TypeToken<ArrayList<MyObject>>() {}.getType();
+	            List<MyObject> myObj = gson.fromJson(json.toString(), listType);
+	            // Use myObj for further processing
+	            String insertSql = "INSERT INTO Uni_Canada (domains, country, web_pages, name, alpha_two_code) VALUES (?, ?, ?, ?, ?)";
+	            PreparedStatement ps = con.prepareStatement(insertSql);
+	            
+	            for (MyObject obj : myObj) {
+	                List<String> domains = obj.getDomains();
+	                String country = obj.getCountry();
+	                List<String> webPages = obj.getWeb_pages();
+	                String webPagesString = String.join(",", webPages);
+	                String name = obj.getName();
+	                String alpha_two_code = obj.getAlpha_two_code();
+	                ps.setString(1, String.join(",", domains));
+	                ps.setString(2, country);
+	                ps.setString(3, webPagesString);
+	                ps.setString(4, name);
+	                ps.setString(5, alpha_two_code);
+	                System.out.println(insertSql);
+	                ps.executeUpdate();
 		               
 		            }
-//		            System.out.println("done");
+		            System.out.println("done");
 		            
 		        } catch (Exception e) {
 		            e.printStackTrace();
