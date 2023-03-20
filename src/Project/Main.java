@@ -254,40 +254,50 @@ public class Main {
             System.out.println("You must be logged in to perform this action");
             return;
         }
+
+        File defaultBackupFile = new File("./backups.bak");
         
-        String defaultBackupPath = "UniversitiesProject/backups.bak";
-        File defaultBackupFile = new File(defaultBackupPath);
-        
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Choose backup file location");
-        fileChooser.setSelectedFile(defaultBackupFile);
-        int userSelection = fileChooser.showSaveDialog(null);
-        
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File backupFile = fileChooser.getSelectedFile();
-            String backupPath = backupFile.getAbsolutePath();
-            
-            if (backupFile.exists()) {
-                int confirmOverwrite = JOptionPane.showConfirmDialog(null, "The backup file already exists. Do you want to overwrite it?", "Confirm Overwrite", JOptionPane.YES_NO_OPTION);
-                if (confirmOverwrite == JOptionPane.NO_OPTION) {
-                    System.out.println("Backup canceled");
-                    return;
-                }
-            }
-            
-            try {
-                con = DriverManager.getConnection(url, "sa", "root");
-                String sql = "BACKUP DATABASE Universities TO DISK = '" + backupPath + "'";
-                Statement st = con.createStatement();
-                st.execute(sql);
-                System.out.println("Database backup created at " + backupPath);
-                System.out.println("Done");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Backup canceled");
+        try {
+            con = DriverManager.getConnection(url, "sa", "root");
+            String sql = "BACKUP DATABASE Universities TO DISK = '" + defaultBackupFile.getAbsolutePath() + "'";
+            Statement st = con.createStatement();
+            st.execute(sql);
+            System.out.println("Database backup created at " + defaultBackupFile.getAbsolutePath());
+            System.out.println("Done");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+//        
+//        JFileChooser fileChooser = new JFileChooser();
+//        fileChooser.setDialogTitle("Choose backup file location");
+//        fileChooser.setSelectedFile(defaultBackupFile);
+//        int userSelection = fileChooser.showSaveDialog(null);
+        
+//        if (userSelection == JFileChooser.APPROVE_OPTION) {
+//            File backupFile = fileChooser.getSelectedFile();
+//            String backupPath = backupFile.getAbsolutePath();
+//            
+//            if (backupFile.exists()) {
+//                int confirmOverwrite = JOptionPane.showConfirmDialog(null, "The backup file already exists. Do you want to overwrite it?", "Confirm Overwrite", JOptionPane.YES_NO_OPTION);
+//                if (confirmOverwrite == JOptionPane.NO_OPTION) {
+//                    System.out.println("Backup canceled");
+//                    return;
+//                }
+//            }
+//            
+//            try {
+//                con = DriverManager.getConnection(url, "sa", "root");
+//                String sql = "BACKUP DATABASE Universities TO DISK = '" + backupPath + "'";
+//                Statement st = con.createStatement();
+//                st.execute(sql);
+//                System.out.println("Database backup created at " + backupPath);
+//                System.out.println("Done");
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            System.out.println("Backup canceled");
+//        }
         System.out.println("Done");
     }
     
