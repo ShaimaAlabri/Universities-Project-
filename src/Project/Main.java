@@ -114,7 +114,7 @@ public class Main {
 	                ps.setString(3, webPagesString);
 	                ps.setString(4, name);
 	                ps.setString(5, alpha_two_code);
-	                System.out.println(insertSql);
+//	                System.out.println(insertSql);
 //	                ps.executeUpdate();
 		               
 		            }
